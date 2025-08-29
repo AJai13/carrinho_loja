@@ -84,24 +84,16 @@ def limpar_carrinho(request):
     return redirect('carrinho')
 
 def finalizar_compra(request):
-    # Inicializa o gerenciador de carrinho
     cart = CarrinhoManager(request)
-    
-    # Em um sistema real, aqui seria feito o processamento do pagamento,
-    # salvamento dos dados do pedido, etc.
-    
-    # Verifica se há itens no carrinho
+
     if cart.get_quantidade_total() > 0:
-        # Obter detalhes da compra para exibir no recibo
         itens = cart.get_itens()
         total = cart.get_total()
         
-        # Limpa o carrinho após a compra
         cart.limpar()
         
         messages.success(request, "Compra realizada com sucesso! Obrigado por comprar conosco.")
         
-        # Contexto para a página de confirmação
         contexto = {
             'titulo': 'Compra Finalizada',
             'itens': itens,
