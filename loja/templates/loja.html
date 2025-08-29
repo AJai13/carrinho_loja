@@ -1,0 +1,39 @@
+{% extends 'carrinho.html' %}
+
+{% block title %}Loja do {{ usuario }}{% endblock %}
+
+{% block content %}
+    <h2>{{ titulo }}</h2>
+    <p>Selecione os produtos desejados.</p>
+    
+    <div class="produtos-grid">
+        {% if produtos %}
+            {% for produto in produtos %}
+                <div class="produto-card">
+                    <h3>{{ produto.nome }}</h3>
+                    <p>R$ {{ produto.preco }}</p>
+                    <!-- <p>Categoria: {{ produto.categoria.nome }}</p> -->
+                    
+                    <form action="{% url 'adicionar_ao_carrinho' produto.id %}" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="next" value="{{ request.path }}">
+                        <div class="quantidade">
+                            <label for="quantidade-{{ produto.id }}">Quantidade:</label>
+                            <input type="number" id="quantidade-{{ produto.id }}" name="quantidade" value="1" min="1" max="10">
+                        </div>
+                        <button type="submit" class="btn-add-cart">Adicionar ao Carrinho</button>
+                    </form>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>Nenhum produto disponível.</p>
+        {% endif %}
+    </div>
+    
+    <div class="carrinho-preview">
+        <a href="{% url 'carrinho' %}" class="btn-ver-carrinho">Ver Carrinho</a>
+    </div>
+    <footer>
+        <p>&copy; 2023 Loja. Todos os direitos reservados.</p>
+    </footer>
+{% endblock %}
